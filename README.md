@@ -1,6 +1,98 @@
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/your-username/coffee-cupping-app.git
-git push -u origin main
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Coffee Cupping App</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    input, textarea {
+      width: 100%;
+      margin: 5px 0;
+      padding: 8px;
+      font-size: 1em;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    h1 {
+      font-size: 1.5em;
+      margin-bottom: 1em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Coffee Cupping Form</h1>
+
+  <input placeholder="Name" id="name" />
+  <input placeholder="Coffee (e.g. Arabica Catimor)" id="coffee" />
+  <input placeholder="Brew Method (e.g. V60, Espresso)" id="method" />
+  <input placeholder="Brew Ratio (e.g. 1:15)" id="ratio" />
+  <input placeholder="Water Temp (°C)" type="number" id="temperature" />
+  <input placeholder="Brew Time (e.g. 1:55)" id="time" />
+
+  <div class="grid" id="score-inputs"></div>
+
+  <textarea placeholder="Notes" id="notes"></textarea>
+
+  <div style="margin-top:10px;"><strong>Total Score: <span id="total">0</span>/100</strong></div>
+
+  <button onclick="saveForm()">Save</button>
+
+  <script>
+    const scoreFields = [
+      ["Aroma (Dry)", "aromaDry"],
+      ["Aroma (Wet)", "aromaWet"],
+      ["Aroma (Overall)", "aromaOverall"],
+      ["Sweetness", "sweetness"],
+      ["Acidity", "acidity"],
+      ["Bitterness", "bitterness"],
+      ["Body", "body"],
+      ["Aftertaste", "aftertaste"],
+      ["Balance", "balance"],
+      ["Overall Impression", "overall"]
+    ];
+
+    const scoreContainer = document.getElementById("score-inputs");
+    const scoreState = {};
+
+    scoreFields.forEach(([label, key]) => {
+      const input = document.createElement("input");
+      input.type = "number";
+      input.min = 0;
+      input.max = 10;
+      input.step = 0.1;
+      input.placeholder = `${label} (0–10)`;
+      input.addEventListener("input", () => {
+        scoreState[key] = parseFloat(input.value) || 0;
+        updateTotal();
+      });
+      scoreContainer.appendChild(input);
+    });
+
+    function updateTotal() {
+      const total = Object.values(scoreState).reduce((a, b) => a + b, 0);
+      document.getElementById("total").textContent = total.toFixed(1);
+    }
+
+    function saveForm() {
+      alert("Form saved! (Chức năng lưu sẽ có sau)");
+    }
+  </script>
+</body>
+</html>
